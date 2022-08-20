@@ -25,6 +25,13 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+      - name: install cpanm and multiple modules
+        uses: perl-actions/install-with-cpanm@v1
+        with:
+          install: |
+            File::MimeInfo
+            Digest::MD5;
+            MIME::Base64
       - name: Build EPM
         run: |
           ./.github/workflows/build_epm.pl
