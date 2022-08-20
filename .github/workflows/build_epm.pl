@@ -218,7 +218,7 @@ my $fc = $epm->firstChild;
 my $gh_build = XML::LibXML::Comment->new( $gh_build_content );
 
 $epm->insertBefore( $gh_build, $fc );
-my $output_file = "$epmid-$version-github_action.epm";
+my $output_file = "$base_dir/$epmid-$version-github_action.epm";
 say "::notice ::Saving to: $output_file";
 
 open my $xml, '>' , $output_file or die "Cannot write: $!\n";
