@@ -2,7 +2,9 @@ name: Test GitHub actions
 
 # Trigger the workflow on push or pull request
 on: [push, pull_request]
-
+  branches:
+  - 'action-test'
+  
 jobs:
   validate:
     runs-on: ubuntu-latest
