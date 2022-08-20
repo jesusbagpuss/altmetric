@@ -1,0 +1,20 @@
+name: Test GitHub actions
+
+# Trigger the workflow on push or pull request
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Check perl
+      run: |
+        which perl
+#        
+#    - name: Install perl
+#      run: |
+#        sudo apt-get install -qq -yy perl
+#    - name: Run build script
+#      run: |
+#        ./.github/workflows/build_epm.pl
