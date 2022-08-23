@@ -56,6 +56,7 @@ else
 		$errmsg = $repo->phrase( 'lib/altmetric:unknown_error' );
 	}
 
+	# TODO: check if these phrases create valid JSON
 	print STDOUT '{ "error": "1", "message": "'.$errmsg.'" }';
 }
 
