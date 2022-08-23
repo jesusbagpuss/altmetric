@@ -12,7 +12,7 @@ Now maintained by *us* - eprintsug!
 
 ## Version history ##
 
-### Version 1.3.0 (not released yet) ###
+### Version 1.3.0 (pre-release) ###
 - Adds user-agent in request made to Altmetric API
 - Displays default phrase (supports multiple languages) with link to Altmetric site before badge is displayed. See the [altmetric.xml phrase file](lib/lang/en/phrases/altmetric.xml#L9).
 - Above phrase is also used when the badge is displayed 
