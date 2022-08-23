@@ -1,21 +1,19 @@
 #!/usr/bin/env perl
 
-# This gist claims to list default modules available on the ubuntu-latest runner.
-# https://gist.github.com/JJ/edf3a39d68525439978da2a02763d42b
-#
 use File::Basename qw( basename );
 use File::Find     qw( find );
-use File::MimeInfo;
 
 use POSIX qw( strftime );
 
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
+# the following modules are not part of the base ubuntu-latest runner. They are installed in a step 
+# of the Action using 'perl-actions/install-with-cpanm@v1'.
+# See ~/.github/workflows/build_epm.yml for details
+use File::MimeInfo;
 use Digest::MD5;
 use MIME::Base64 ();
-#use MIME::Types; # not part of the default runner image, but File::MimeInfo is - so might as well use that.
-
 
 use strict;
 use feature qw(say);
