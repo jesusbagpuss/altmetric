@@ -67,7 +67,7 @@ find( {
                         elsif ( $File::Find::name =~ m/\.epm$/ )
                         {
                                 #do we want to do anything special with the existing epm?
-                                say "notice: file=$File::Find::name ::epm file already exists";
+                                say "::notice file=$File::Find::name ::epm file already exists";
                         }
                         else
                         {
