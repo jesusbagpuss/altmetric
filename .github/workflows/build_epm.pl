@@ -30,9 +30,10 @@ my $gh_build_content = "This file was built with a GitHub action. Check the .git
 Build details: - repo: " .$ENV{'GITHUB_REPOSITORY'} . " (branch: ". $ENV{'GITHUB_REF_NAME'}.")";
 
 my $epmid;
-my $epmi;
-my $version;
-my $output_epm;
+my $epmi_file;
+my $epm_file;
+my $epm_version;
+
 my $lib_dir = "$base_dir/lib"; # EPMs get installed in there, but the <filename> elements in the epmi don't list this.
 
 # This hash will hold the filenames that exist in the git repo.
@@ -52,20 +53,19 @@ find( {
                         if( $File::Find::name =~ m/\.epmi$/ )
                         {
                                 #TODO - what if there are multiple EPMIs?
-                                if( defined $epmi )
+                                if( defined $epmi_file )
                                 {
-                                        # $epmi has been cached, but there's another!
-                                        say "::warning file=$File::Find::name ::Multiple epmi files found. Using $epmi";
+                                        # $epmi_file has been cached, but there's another!
+                                        say "::warning file=$File::Find::name ::Multiple epmi files found. Using $epmi_file";
                                 }
                                 else
                                 {
-                                        $epmi = $File::Find::name;
+                                        $epmi_file = $File::Find::name;
                                 }
                         }
                         elsif ( $File::Find::name =~ m/\.epm$/ )
                         {
-                                #do we want to do anything special with the existing epm?
-                                say "::notice file=$File::Find::name ::epm file already exists";
+                                $epm_file = $File::Find::name;
                         }
                         else
                         {
@@ -77,7 +77,7 @@ find( {
         $base_dir
 );
 
-if( !defined $epmi )
+if( !defined $epmi_file )
 {
         say "::error ::No epmi file found";
         exit;
@@ -85,7 +85,7 @@ if( !defined $epmi )
 
 my $ns = 'epm';
 my $ns_url = 'http://eprints.org/ep2/data/2.0';
-my $epmi_xml = XML::LibXML->load_xml( location => $epmi );
+my $epmi_xml = XML::LibXML->load_xml( location => $epmi_file );
 my $xpc = XML::LibXML::XPathContext->new( $epmi_xml );
 $xpc->registerNs( $ns => $ns_url );
 
@@ -116,7 +116,7 @@ foreach my $elem (qw/ title description epmid requirements version /)
 
 # already checked there's only one of these - just grab it now.
 $epmid = $xpc->findvalue( "/$ns:epm/$ns:epmid" );
-$version = $xpc->findvalue( "/$ns:epm/$ns:version" );
+$epm_version = $xpc->findvalue( "/$ns:epm/$ns:version" );
 
 my @epmi_docs = $xpc->findnodes( "//$ns:documents/$ns:document" );
 foreach my $epmi_doc (@epmi_docs)
@@ -216,13 +216,26 @@ my $fc = $epm->firstChild;
 my $gh_build = XML::LibXML::Comment->new( $gh_build_content );
 
 $epm->insertBefore( $gh_build, $fc );
-my $output_file = "$base_dir/$epmid-$version-github_action.epm";
+my $output_file = "$base_dir/$epmid-$epm_version-github_action.epm";
 say "::notice ::Saving to: $output_file";
 
 open my $xml, '>' , $output_file or die "Cannot write: $!\n";
 print $xml $epmi_xml->toString(2);
 close $xml;
+# TODO check save OK
 
+# Output some things to use in next workflow step
+say "::set-output name=new_epm_filename::$output_file";
+say "::set-output name=old_epm_filename::$epm_file";
+
+# Output some warnings if there are files present that aren't listed in the epmi
+# (might need to add more exclusions e.g. README.md)
+foreach my $f ( keys %$files ) {
+  if( !$files->{$f} )
+  {
+        say "::warning file=${f}::File present in repo but not listed in the epmi";
+  }
+}
 
 sub update_file_elements
 {
