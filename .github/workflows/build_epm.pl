@@ -233,7 +233,7 @@ say "::set-output name=old_epm_filename::$epm_file";
 foreach my $f ( keys %$files ) {
   if( !$files->{$f} )
   {
-        say "::warning file=${f}::File present in repo but not listed in the epmi";
+        say "::warning file=${f}::File $f present in repo but not listed in the epmi";
   }
 }
 
