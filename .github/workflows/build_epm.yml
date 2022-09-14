@@ -62,5 +62,6 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           branch: autobuild-epm
+          base: master
           delete-branch: true
           title: 'Automatic build of EPM file from epmi details and contained files.'
