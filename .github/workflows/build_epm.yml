@@ -53,7 +53,7 @@ jobs:
 
       - name: Rename EPM
         run: |
-          mv ${{ steps.build_epm.output.new_epm_filename }} ${{ steps.build_epm.output.old_epm_filename }}
+          mv ${{ steps.build_epm.outputs.new_epm_filename }} ${{ steps.build_epm.outputs.old_epm_filename }}
 
       - name: Update PR
         uses: peter-evans/create-pull-request@v4
