@@ -37,10 +37,25 @@ jobs:
             MIME::Base64
 
       - name: Build EPM
+        id: build_epm
         run: |
           ./.github/workflows/build_epm.pl
 
-      - name: Create Pull Request
+      - name: Create initial PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: Auto-build of EPM
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          branch: autobuild-epm
+          delete-branch: true
+          title: 'Automatic build of EPM file from epmi details and contained files.'
+
+      - name: Rename EPM
+        run: |
+          mv ${{ steps.build_epm.output.new_epm_filename }} ${{ steps.build_epm.output.old_epm_filename }}
+
+      - name: Update PR
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: Auto-build of EPM
