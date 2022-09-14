@@ -52,11 +52,10 @@ find( {
                         # if it's the epm or epmi, we won't list it in the XML
                         if( $File::Find::name =~ m/\.epmi$/ )
                         {
-                                #TODO - what if there are multiple EPMIs?
                                 if( defined $epmi_file )
                                 {
                                         # $epmi_file has been cached, but there's another!
-                                        say "::warning file=$File::Find::name ::Multiple epmi files found. Using $epmi_file";
+                                        say "::error file=$File::Find::name ::Multiple epmi files found. There should only be one. Using $epmi_file";
                                 }
                                 else
                                 {
@@ -92,7 +91,7 @@ $xpc->registerNs( $ns => $ns_url );
 my $epm = $epmi_xml->documentElement();
 
 # Other elements that could/should exist?
-# Might want to check these, or prompt for the empi to be updated?
+# Might want to check these, or prompt for the epmi to be updated?
 # - creators + subfields
 # - homepage
 # - icon
@@ -301,10 +300,6 @@ sub value_hash
         my( $data ) = @_;
 
         return Digest::MD5::md5_hex( $data );
-        #open ( myd $fh, '<', $filename ) or die "Can't open '$filename': $!";
-        #binmode ( $fh );
-
-        #return Digest::MD5->new->addfile( $fh )->hexdigest
 }
 
 sub value_hash_type
@@ -316,9 +311,7 @@ sub value_mime_type
 {
         my( $data, $filename ) = @_;
 
-        # this works on file extensions. Some files e.g. cgi scripts don't have an extension,
-        # so we set a default
-        #return MIME::Types->new->mimeTypeOf( $filename ) || 'text/plain';
+	# defaults to 'text/plain' or 'application/octet-stream' (from: https://metacpan.org/pod/File::MimeInfo)
         return mimetype( $filename );
 }
 
