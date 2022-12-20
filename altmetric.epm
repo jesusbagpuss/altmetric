@@ -4291,7 +4291,7 @@ MSswMTowMGiQaVUAAAAASUVORK5CYII=
       <id>https://github.com/jesusbagpuss</id>
     </item>
   </creators>
-  <datestamp>2022-12-20T23:05:30Z</datestamp>
+  <datestamp>2022-12-20T23:06:44Z</datestamp>
   <title>Altmetric</title>
   <description>Display altmetric's badges on summary pages. Visit the altmetric web-site for more information: http://www.altmetric.com/</description>
   <requirements>An optional API key from Altmetric.</requirements>
