@@ -44,11 +44,11 @@ jobs:
           ./.github/workflows/build_epm.pl
 
       - name: Create initial PR
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v7
         with:
           commit-message: Auto-build of EPM
-          committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          #committer: GitHub <noreply@github.com>
+          #author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           branch: autobuild-epm
           delete-branch: true
           title: 'Automatic build of EPM file from epmi details and contained files.'
@@ -58,12 +58,12 @@ jobs:
           mv ${{ steps.build_epm.outputs.new_epm_filename }} ${{ steps.build_epm.outputs.old_epm_filename }}
 
       - name: Update PR
-        uses: peter-evans/create-pull-request@v5-beta
+        uses: peter-evans/create-pull-request@v7
         with:
           commit-message: Auto-build of EPM
-          committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          #committer: GitHub <noreply@github.com>
+          #author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           branch: autobuild-epm
-          base: master
+          base: main
           delete-branch: true
           title: 'Automatic build of EPM file from epmi details and contained files.'
