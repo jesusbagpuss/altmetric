@@ -224,8 +224,10 @@ close $xml;
 # TODO check save OK
 
 # Output some things to use in next workflow step
-say "::set-output name=new_epm_filename::\"$output_file\"";
-say "::set-output name=old_epm_filename::\"$epm_file\"";
+#say "::set-output name=new_epm_filename::\"$output_file\"";
+#say "::set-output name=old_epm_filename::\"$epm_file\"";
+$ENV{GITHUB_OUTPUT} .= "\nnew_epm_filename=$output_file";
+$ENV{GITHUB_OUTPUT} .= "\nold_epm_filename=$epm_file";
 
 # Output some warnings if there are files present that aren't listed in the epmi
 # (might need to add more exclusions e.g. README.md)
