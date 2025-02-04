@@ -38,10 +38,22 @@ jobs:
             Digest::MD5
             MIME::Base64
 
+      # sets new_epm_filename and old_epm_filename output envs
       - name: Build EPM
         id: build_epm
         run: |
           ./.github/workflows/build_epm.pl
+
+      - run:   echo "$OUTPUTS"
+        shell: bash
+        env:
+          OUTPUTS: ${{ toJSON(steps.build_epm.outputs) }}
+      - run:   echo "$GITHUB_OUTPUTS"
+        shell: bash
+
+      #- name: Save epm
+      #  uses: actions/upload-artifact@v4
+      #  with:
 
       - name: Create initial PR
         uses: peter-evans/create-pull-request@v7
